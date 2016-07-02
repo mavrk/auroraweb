@@ -3,7 +3,7 @@
 	[
 			{
 				"path": ".",
-				"folder_exclude_patterns": [],
+				"folder_exclude_patterns": ["node_modules"],
 				"folder_include_patterns": [],
 				"file_include_patterns": [],
 				"file_exclude_patterns": []
@@ -17,7 +17,7 @@
 	"build_systems":
 	[
 		{
-			"name" : "List Directory",
+			"name" : "List Directory( test )",
 			"cmd" : ["ls"],
 		}
 	]

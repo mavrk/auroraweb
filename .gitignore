@@ -30,4 +30,4 @@ node_modules
 npm-debug.log
 
 # Sublime workspace
-.sublime-workspace
+aurora.sublime-workspace

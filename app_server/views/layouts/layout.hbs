@@ -37,13 +37,13 @@
             function resettile() {
                 $.ajax({
                     type: "GET",
-                    url: "/broadcast.php",
+                    url: "/broadcast",
                     data: {updatetime: ""}
                 });
                 window.document.title = "Aurora";
             }
             window.setTimeout("bchk();", 300000);
-            $.ajax("/broadcast.php").done(function(msg) {
+            $.ajax("/broadcast").done(function(msg) {
                 var json = eval('(' + msg + ')');
                 console.log(msg);
                 if (json.broadcast.length != 0) {
@@ -61,7 +61,7 @@
                 }
             });
             function bchk() {
-                $.ajax("/broadcast.php").done(function(msg) {
+                $.ajax("/broadcast").done(function(msg) {
                     var json = eval('(' + msg + ')');
                     console.log(msg);
                     if (json.broadcast.length != 0) {
@@ -107,7 +107,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="">Aurora</a>
+                        <a class="navbar-brand" href="/">Aurora</a>
                     </div>
 
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -125,8 +125,9 @@
                                 </ul>
                             </li>
                         </ul>
-
+                        {{#if session.authorized}}
                         <ul class="nav navbar-nav pull-right">
+                            {{#if session.isAdmin}}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -140,26 +141,29 @@
                                     <li><a href='/adminlog'>Request Logs</a></li>                                            
                                 </ul>
                             </li>
+                            {{/if}}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href='/edit'>Account Settings</a></li>
-                                    <li><a href='/process.php?logout'>Logout</a></li>
+                                    <li><a href='/logout'>Logout</a></li>
                                 </ul>
                             </li>
                         </ul>
+                        {{/if}}
                     </div>
                 </div> 
             </nav> 
             <div class="container bodycont">
                 <div class='row'>
                     <div class='col-md-9' id='mainbar'>
-                        <div class="alert alert-danger" style="margin-top: 20px;">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <center>message</center>
-                        </div>
+                        {{#if flash}}
+                            <div class="alert alert-dismissible alert-{{flash.type}}" style="margin-top: 20px;">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <center><strong>{{flash.intro}}</strong> {{{flash.message}}}</center>
+                            </div>
+                        {{/if}}
                         {{{body}}}
-                        <br/><br/><br/><div style='padding: 10px;'><h1>Page not Found :(</h1>The page you are searching for is not on this site.</div><br/><br/><br/>";
                     </div>
                     <div class='col-md-3'>
                         <div id='sidebar'>
@@ -168,7 +172,7 @@
                             <h4>Contest Status</h4>
                             <a style="float:right;" href="#">View all</a>
                         </div>
-                        <h4>Overall Rankings</h4>';                        
+                        <h4>Overall Rankings</h4>
                         <hr />
                         <hr/>
                     </div>

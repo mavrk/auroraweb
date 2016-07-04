@@ -1,6 +1,7 @@
+{{#unless session.authorized}}
 <h4>Login</h4>
 <center>
-    <form action="/process.php" method="post" role="form">
+    <form action="/login" method="post" role="form">
         <div class="input-group" style="margin-bottom: -1px;">
             <span class="input-group-addon" style="border-bottom-left-radius: 0;"><i class="glyphicon glyphicon-user"></i></span>
             <input class="form-control" style="border-bottom-right-radius: 0;" type="text" name="teamname" placeholder="Teamname" required/>
@@ -13,7 +14,18 @@
     </form>
     <a href='/register'>New Team? Register Here.</a>
 </center>
-<h4>Team</h4> 
-<table class='table table-condensed'>
-<tr><th>Team Name</th><th>Score</th><th>Overall Rank</th></tr>
-</table>
+{{/unless}}
+{{#if session.authorized}}
+    <h4>Team</h4> 
+    <table class='table table-condensed'>
+        <tr>
+            <th>Team Name</th>
+            <th>Score</th>
+            <th>Overall Rank</th>
+        </tr>
+        <tr>
+            <td><a href='/teams/{{session.teamname}}'>{{session.teamname}}</a></td>
+            <!-- <td>$res[score]</td><td style='text-align: center'>$res[rank]</td> -->
+        </tr>
+    </table>
+{{/if}}

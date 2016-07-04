@@ -19,3 +19,4 @@ function query(query, cb){
 }
 
 module.exports.query = query;
+module.exports.escape = mysql.escape;

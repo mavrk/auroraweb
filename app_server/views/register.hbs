@@ -1,0 +1,217 @@
+{{#if judge.Lockdown}}
+<br/>
+<br/>
+<br/>
+<div style='padding: 10px;'>
+    <h1>Lockdown Mode :(</h1>
+    This feature is now offline as Judge is in Lockdown mode.
+</div>
+<br/>
+<br/>
+<br/>
+{{/if}}
+
+
+
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $('#teamname').focus(function() {
+            $('#teamname').tooltip('show');
+        });
+        $('#teamname').blur(function() {
+            $('#teamname').tooltip('hide');
+        });
+
+        for(var i = 1; i <= 3; i++){
+            var id = '#roll' + i;
+            $(id).focus(function() {
+                console.log('sk11');
+                $(this).tooltip('show');
+            });
+            $(id).blur(function() {
+                $(this).tooltip('hide');
+            });
+        }
+    });
+    function validate(){
+        var regex = /[A-Z]{2,6}[/][0-9]{4,5}[/]201[1-4]$/;
+        //console.log('A'.match(regex));
+        var roll1 = document.getElementById("roll1").value;
+        var m = regex.exec(roll1);
+        console.log(roll1);
+        if(m==null){
+            $("#roll1").tooltip('show');
+            document.getElementById("roll1").style.borderColor="red";
+            return false;
+        }
+        return true;
+    }
+</script>
+
+
+
+<h1>Register</h1>
+<form method='post' class='form-horizontal'  role="form" onsubmit="return validate()" action='/register'>
+    <div class='col-lg-12'>
+
+
+
+
+
+        <!--Team info (teamname, password, repassword, group ) -->
+        <div class='form-group'>
+            <label class="col-lg-2 control-label" for='teamname'>Team Name</label>
+            <div class="col-lg-4">
+                <input class='form-control' type='text' name='teamname' id='teamname' required data-placement='right' title='Only alphabets numbers _ and @ are allowed' value='{{session.reg.teamname}}'/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class="col-lg-2 control-label" for='pass1'>Password</label>
+            <div class="col-lg-4">
+                <input class='form-control' type='password' name='password' id='pass1' required />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class="col-lg-2 control-label" for='pass2'>Re-Password</label>
+            <div class='col-lg-4'>
+                <input class='form-control' type='password' name='repassword' id='pass2' required/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label' for='groupid'>Group</label>
+            <div class='col-lg-4'>
+                <select name="group" class='form-control' id='groupid'>
+                    {{#each groups}}
+                        <option value='{{gid}}'>{{{groupname}}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- Team Member 1 info: (name1, roll1, branch1, email1, phno1 ) -->
+        <h3>Team Member 1 (compulsory)</h3>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label' for='name1'>Full Name</label>
+            <div class='col-lg-4'>
+                <input class='form-control' type='text' name='name1' id='name1' value='{{session.reg.name1}}' required/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label' for='roll1'>Roll No</label>
+            <div class='col-lg-4'>
+                <input class='form-control' type='text' name='roll1' id='roll1' required data-placement='right' title='Ex : BE/10206/2013' value='{{session.reg.roll1}}'>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label' for='branch1'>Branch</label>
+            <div class='col-lg-4'>
+                <input class='form-control' type='text' name='branch1' id='branch1' value='{{session.reg.branch1}}' required/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label' for='email1'>E-mail</label>
+            <div class='col-lg-4'>
+                <input class='form-control' type='email' name='email1' value='{{session.reg.email1}}'id='email1' required />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label' for='phno1'>Phone No</label>
+            <div class='col-lg-4'>
+                <input class='form-control' type='number' value='{{session.reg.phno1}}' name='phno1' id='phno1' required/>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Team Member 2 info: (name2, roll2, branch2, email2, phno2 ) -->
+    <div class='col-lg-6'>
+        <h3>Team Member 2 (optional)</h3>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='name2'>Full Name</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='text' name='name2' id='name2' value='{{session.reg.name2}}'/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='roll2'>Roll No</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='text' name='roll2' id='roll2' data-placement='right' title='Ex :  BE/10206/2013' value='{{session.reg.roll2}}'/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='branch2'>Branch</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='text' name='branch2' id='branch2' value='{{session.reg.branch2}}' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='email2'>E-mail</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='email' name='email2' value='{{session.reg.email2}}'id='email2' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='phno2'>Phone No</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='number' value='{{session.reg.phno2}}' name='phno2' id='phno2'/>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Team Member 3 info: (name3, roll3, branch3, email3, phno3 ) -->
+    <div class='col-lg-6'>
+        <h3>Team Member 3 (optional)</h3>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='name3'>Full Name</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='text' name='name3' id='name3' value='{{session.reg.name3}}' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='roll3'>Roll No</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='text' name='roll3' id='roll3' data-placement='left' title='Ex : BE/10206/2013' value='{{session.reg.roll3}}'/>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='branch3'>Branch</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='text' name='branch3' id='branch3' value='{{session.reg.branch3}}' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='email3'>E-mail</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='email' name='email3' value='{{session.reg.email3}}'id='email3' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='col-lg-4 control-label' for='phno3'>Phone No</label>
+            <div class='col-lg-8'>
+                <input class='form-control' type='number' value='{{session.reg.phno3}}' name='phno3' id='phno3' />
+            </div>
+        </div>
+    </div>
+
+
+    <div class='col-lg-12'>
+        <div class='form-group'>
+            <label class='col-lg-2 control-label'></label>
+            <div class='col-lg-4'>
+                <input type='submit' name='register' value='Submit' class='btn btn-primary btn-large'/>
+            </div>
+        </div>
+    </div>
+</form>
+    

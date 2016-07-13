@@ -1,11 +1,12 @@
 var process = require('../app_server/controllers/process');
 
-module.exports = function(app){
-    app.use(process.all);
-    app.post('/login', process.login);
-    app.get('/logout', process.logout);
-    app.post('/register', process.register);
-    app.post('/broadcast', process.broadcast);
-    app.get('/broadcast', process.broadcast);
+module.exports = function(router){
+    router.use(process.all);
+    router.post('/process/login', process.login);
+    router.get('/process/logout', process.logout);
+    router.post('/process/register', process.register);
+    router.post('/process/broadcast', process.broadcast);
+    router.get('/process/broadcast', process.broadcast);
+    router.use('/process', process.lastCall);
 }
 

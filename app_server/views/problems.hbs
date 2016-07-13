@@ -1,0 +1,92 @@
+{{#if problemCode}}
+    {{#if problemDetails}}
+        {{#if session.authorized}}
+        {{#if session.isAdmin}}
+            <a class='btn btn-primary pull-right' style='margin-top: 10px;' href='/{{mountPath}}/adminproblem/{{problemDetails.code}}'>
+            <i class='glyphicon glyphicon-edit'></i> Edit</a>
+        {{/if}}
+        {{/if}}
+
+        {{#if shouldHaveAccess}}
+            <center><h1>{{problemDetails.name}}</h1></center>
+            <div style='text-align:left'>
+                {{#eq problemDetails.contest 'contest'}}
+                    <span class='btn-group'>
+                    <a class='btn btn-primary' href='/{{mountPath}}/contests/$result[pgroup]'><span class='glyphicon glyphicon-chevron-left'></span> Problems</a>
+                    </span>
+                {{/eq}}
+                <span class='btn-group' style='float:right;'>
+                {{#if session.authorized}}
+                    <a class='btn btn-primary' href='/{{mountPath}}/status/{{problemnDetails.code}},{{session.teamname}}'>My Submissions</a>
+                {{/if}}
+                    <a class='btn btn-primary' href='/{{mountPath}}/status/{{problemnDetails.code}}'>All Submissions</a>
+                {{#eq problemDetails.status 'Active'}}
+                    <a class='btn btn-primary' href='/{{mountPath}}/submit/{{problemnDetails.code}}'>Submit</a>
+                {{else}}
+                    {{#if session.authorized}}
+                        {{#if session.isAdmin}}
+                            <a class='btn btn-primary' href='/{{mountPath}}/submit/{{problemnDetails.code}}'>Submit</a>
+                        {{/if}}
+                    {{/if}}
+                {{/eq}}
+                </span>
+            </div>
+
+            <br/><br/>{{{problemDetails.statement}}}<br/>
+            <b>Time Limit :</b> {{problemDetails.timelimit}} Second(s)
+            <br/>
+            <b>Score :</b> {{problemDetails.score}} Point(s)
+            <br/>
+            <b>Input File Limit :</b> {{problemDetails.maxfilesize}} Bytes
+            <br/>
+            <b>Languages Allowed :</b> {{problemDetails.languages}}
+
+
+            <hr/>
+
+            <h3>Clarifications</h3>
+            {{#if clars}}
+                {{#each clars}}
+                    <hr />
+                    <b><a href='/{{mountPath}}/teams/{{teamname}}'>{{teamname}}</a>:<br/>Q. {{{query}}}</b>
+                    <br/>
+                    {{#eq reply ''}}
+                        ' '
+                    {{else}}
+                        A. {{{reply}}}
+                    {{/eq}}
+                    {{#if session.isAdmin}}
+                        <form role='form' method='post' action='/{{mountPath}}/reply'>
+                            Access: <select style='width: 250px;' class='form-control' name='access'>
+                                        <option value='public' " . (($row['access'] == "public") ? ("selected='selected' ") : ("")) . ">Public</option>
+                                        <option value='deleted' " . (($row['access'] == "deleted") ? ("selected='selected' ") : ("")) . ">Deleted</option>
+                                    </select>
+                            <br/>
+                            <input type='hidden' name='tid' value='{{tid}}' />
+                            <input type='hidden' name='pid' value='{{pid}}' />
+                            <input type='hidden' name='time' value='{{time}}'/>
+                            <textarea class='form-control' name='reply' style='width: 450px; height: 100px;'>reply</textarea>
+                            <br/>
+                            <input type='submit' class='btn btn-primary' name='clarreply' value='Reply / Change Reply'/>
+                        </form>
+                    {{/if}}
+                {{/each}}
+            {{else}}
+                No Clarifications.
+                <br>
+            {{/if}}
+        {{else}}
+            <br />
+            <div class="alert alert-danger" role="alert">
+                <b>Contest not yet started!</b>
+            </div>
+        {{/if}}
+    {{else}}
+        <br />
+        <div class="alert alert-danger" role="alert">
+            <b>Problem not found!</b>
+        </div>
+    {{/if}}
+{{else}}
+    All problems
+{{/if}}

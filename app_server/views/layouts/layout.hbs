@@ -4,11 +4,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <link type="text/css" rel="stylesheet" href="/css/bootstrap.css" media="screen" />
-        <link type="text/css" rel="stylesheet" href="/css/style.css" media="screen" />
-        <script type="text/javascript" src="/js/jquery.js"></script>
-        <script type="text/javascript" src="/js/bootstrap.js"></script> 
-        <script type="text/javascript" src="/js/plugin.js"></script>
+        <link type="text/css" rel="stylesheet" href="/{{mountPath}}/css/bootstrap.css" media="screen" />
+        <link type="text/css" rel="stylesheet" href="/{{mountPath}}/css/style.css" media="screen" />
+        <script type="text/javascript" src="/{{mountPath}}/js/jquery.js"></script>
+        <script type="text/javascript" src="/{{mountPath}}/js/bootstrap.js"></script> 
+        <script type="text/javascript" src="/{{mountPath}}/js/plugin.js"></script>
         <script type="text/javascript">
             $(window).load(function() {
                 if ($('#sidebar').height() < $('#mainbar').height()){
@@ -19,7 +19,7 @@
             });
         </script>
         <title>Aurora</title>
-        <link rel='shortcut icon' href='/img/favicon.png' />
+        <link rel='shortcut icon' href='/{{mountPath}}/img/favicon.png' />
     </head>
     <body>
         <script type='text/javascript'>
@@ -37,13 +37,13 @@
             function resettile() {
                 $.ajax({
                     type: "GET",
-                    url: "/broadcast",
+                    url: "/{{mountPath}}/process/broadcast",
                     data: {updatetime: ""}
                 });
                 window.document.title = "Aurora";
             }
             window.setTimeout("bchk();", 300000);
-            $.ajax("/broadcast").done(function(msg) {
+            $.ajax("/{{mountPath}}/process/broadcast").done(function(msg) {
                 var json = eval('(' + msg + ')');
                 console.log(msg);
                 if (json.broadcast.length != 0) {
@@ -61,7 +61,7 @@
                 }
             });
             function bchk() {
-                $.ajax("/broadcast").done(function(msg) {
+                $.ajax("/{{mountPath}}/process/broadcast").done(function(msg) {
                     var json = eval('(' + msg + ')');
                     console.log(msg);
                     if (json.broadcast.length != 0) {
@@ -107,21 +107,21 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">Aurora</a>
+                        <a class="navbar-brand" href="/{{mountPath}}/">Aurora</a>
                     </div>
 
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav">
-                            <!-- <li><a href="/home">Home</a></li> -->
-                            <li><a href="/problems">Problems</a></li>
-                            <li><a href="/contests">Contests</a></li>
-                            <li><a href="/rankings">Rankings</a></li>
-                            <li><a href="/submissions">Submissions</a></li>
+                            <!-- <li><a href="/{{mountPath}}/home">Home</a></li> -->
+                            <li><a href="/{{mountPath}}/problems">Problems</a></li>
+                            <li><a href="/{{mountPath}}/contests">Contests</a></li>
+                            <li><a href="/{{mountPath}}/rankings">Rankings</a></li>
+                            <li><a href="/{{mountPath}}/submissions">Submissions</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help <span class="caret"></span></a>
                                 <ul class="dropdown-menu navbar-nav navbar-inverse" role="menu">
-                                    <li><a href="/faq">FAQ</a></li>
-                                    <li><a href="/contact">Contact Us</a></li>
+                                    <li><a href="/{{mountPath}}/faq">FAQ</a></li>
+                                    <li><a href="/{{mountPath}}/contact">Contact Us</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -131,22 +131,22 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href='/adminjudge'>Judge Settings</a></li>
-                                    <li><a href='/adminproblem'>Problem Settings</a></li>
-                                    <li><a href='/admincontest'>Contest Settings</a></li>
-                                    <li><a href='/adminteam'>Team Settings</a></li>
-                                    <li><a href='/admingroup'>Group Settings</a></li>
-                                    <li><a href='/adminclar'>Clarifications</a></li>
-                                    <li><a href='/adminbroadcast'>Broadcast</a></li>
-                                    <li><a href='/adminlog'>Request Logs</a></li>                                            
+                                    <li><a href='/{{mountPath}}/adminjudge'>Judge Settings</a></li>
+                                    <li><a href='/{{mountPath}}/adminproblem'>Problem Settings</a></li>
+                                    <li><a href='/{{mountPath}}/admincontest'>Contest Settings</a></li>
+                                    <li><a href='/{{mountPath}}/adminteam'>Team Settings</a></li>
+                                    <li><a href='/{{mountPath}}/admingroup'>Group Settings</a></li>
+                                    <li><a href='/{{mountPath}}/adminclar'>Clarifications</a></li>
+                                    <li><a href='/{{mountPath}}/adminbroadcast'>Broadcast</a></li>
+                                    <li><a href='/{{mountPath}}/adminlog'>Request Logs</a></li>                                            
                                 </ul>
                             </li>
                             {{/if}}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href='/edit'>Account Settings</a></li>
-                                    <li><a href='/logout'>Logout</a></li>
+                                    <li><a href='/{{mountPath}}/edit'>Account Settings</a></li>
+                                    <li><a href='/{{mountPath}}/process/logout'>Logout</a></li>
                                 </ul>
                             </li>
                         </ul>

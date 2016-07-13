@@ -1,0 +1,73 @@
+{{#if teamDetails}}
+    {{#if session.authorized}}
+        {{#if session.isAdmin}}
+        <a class='btn btn-primary pull-right' style='margin-top: 10px;' href='/adminteam/{{teamDetails.teamname}}'><i class='icon-edit icon-white'></i> Edit</a>
+        {{/if}}
+    {{/if}}
+    <center>
+        <h1>{{teamDetails.teamname}}</h1>
+    </center>
+    <table class='table table-bordered'>
+        <tr>
+            <th width='150px'>Team Members</th>
+            <td> 
+                {{teamDetails.name1}}({{teamDetails.branch1}})
+
+                {{#noteq teamDetails.name2 ''}}
+                    , {{teamDetails.name2}}({{teamDetails.branch2}})
+                {{/noteq}}
+
+                {{#noteq teamDetails.name3 ''}}
+                , {{teamDetails.name3}}({{teamDetails.branch3}})
+                {{/noteq}}
+            </td>
+        </tr>
+        <tr>
+            <th>Group</th>
+            <td>{{groupname}}</td>
+        </tr>
+        <tr>
+            <th>Rank</th>
+            <td>
+                {{rank}}
+            </td>
+        </tr>
+        <tr>
+            <th>Score</th>
+            <td>{{score}}</td>
+        </tr>
+        <tr>
+            <th>Practice Score</th>
+            <td>{{practiceScore}}</td>
+        </tr>
+    </table>
+    <center><a href="/{{mountPath}}/submissions/{{teamDetails.teamname}}">{{teamDetails.teamname}}'s Submissions</a></center>
+{{else}}
+    <br/>
+    <br/>
+    <br/>
+    <div style='padding: 10px;'>
+        <h1>Team not Found :(</h1>
+        The team you are looking for doesn't exsits.
+    </div>
+    <br/>
+    <br/>
+    <br/>
+{{/if}}
+
+
+
+<!--
+
+select sum(score) as tot from 
+    (
+        select distinct(pid), (select score from problems where pid = runs.pid and contest = 'practice') as score from runs 
+        where pid in (select pid from problems where contest = 'practice' and status = 'Active') and result = 'AC' and tid = $res[tid]
+    )
+
+select sum(score) as tot from
+    (
+        select distinct(pid), (select score from problems where pid = runs.pid and contest = 'practice') as score from runs
+        where pid in (select pid from problems where contest = 'practice' and status = 'Active') and result = 'AC' and tid = '6'
+    )t
+-->

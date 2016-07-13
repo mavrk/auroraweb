@@ -1,7 +1,7 @@
 {{! Give admin Judge settings button}}
 {{#if session.authorized}}
     {{#if session.isAdmin}}
-        <a class='btn btn-primary pull-right' style='margin-top: 10px;' href='/adminjudge'>
+        <a class='btn btn-primary pull-right' style='margin-top: 10px;' href='/{{mountPath}}/adminjudge'>
             <i class='glyphicon glyphicon-edit'></i>
             Edit Judge Settings
         </a>

@@ -8,5 +8,6 @@ module.exports = {
             httpOnly: true,
             signed: true
         }
-    }
+    },
+    mountPath: 'aurora'
 }

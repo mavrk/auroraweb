@@ -13,7 +13,7 @@ function query(query, cb){
         if(err){
             return cb(err);
         }
-        connection.query(query, cb);
+        console.log(connection.query(query, cb).sql);
         connection.release();
     });
 }

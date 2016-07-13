@@ -1,7 +1,7 @@
 {{#unless session.authorized}}
 <h4>Login</h4>
 <center>
-    <form action="/login" method="post" role="form">
+    <form action="/{{mountPath}}/process/login" method="post" role="form">
         <div class="input-group" style="margin-bottom: -1px;">
             <span class="input-group-addon" style="border-bottom-left-radius: 0;"><i class="glyphicon glyphicon-user"></i></span>
             <input class="form-control" style="border-bottom-right-radius: 0;" type="text" name="teamname" placeholder="Teamname" required/>
@@ -12,7 +12,7 @@
         </div><br/>
         <input type="submit" name="login" value="Log In" class="btn btn-primary btn-block"/>
     </form>
-    <a href='/register'>New Team? Register Here.</a>
+    <a href='/{{mountPath}}/process/register'>New Team? Register Here.</a>
 </center>
 {{/unless}}
 {{#if session.authorized}}
@@ -24,7 +24,7 @@
             <th>Overall Rank</th>
         </tr>
         <tr>
-            <td><a href='/teams/{{session.teamname}}'>{{session.teamname}}</a></td>
+            <td><a href='/{{mountPath}}/teams/{{session.teamname}}'>{{session.teamname}}</a></td>
             <!-- <td>$res[score]</td><td style='text-align: center'>$res[rank]</td> -->
         </tr>
     </table>

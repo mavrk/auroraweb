@@ -55,17 +55,25 @@
                     {{else}}
                         A. {{{reply}}}
                     {{/eq}}
-                    {{#if session.isAdmin}}
-                        <form role='form' method='post' action='/{{mountPath}}/reply'>
+                    {{#if ../session.isAdmin}}
+                        <form role='form' method='post' action='/{{../mountPath}}/process/updateclaraccess'>
                             Access: <select style='width: 250px;' class='form-control' name='access'>
-                                        <option value='public' " . (($row['access'] == "public") ? ("selected='selected' ") : ("")) . ">Public</option>
-                                        <option value='deleted' " . (($row['access'] == "deleted") ? ("selected='selected' ") : ("")) . ">Deleted</option>
+                                        <option value='public'
+												{{#eq access 'public'}}
+													selected='selected'
+												{{/eq}}
+										>Public</option>
+                                        <option value='deleted'
+												{{#eq access 'deleted'}}
+													selected='selected'
+												{{/eq}}
+										>Deleted</option>
                                     </select>
                             <br/>
                             <input type='hidden' name='tid' value='{{tid}}' />
                             <input type='hidden' name='pid' value='{{pid}}' />
                             <input type='hidden' name='time' value='{{time}}'/>
-                            <textarea class='form-control' name='reply' style='width: 450px; height: 100px;'>reply</textarea>
+                            <textarea class='form-control' name='reply' style='width: 450px; height: 100px;'>{{{reply}}}</textarea>
                             <br/>
                             <input type='submit' class='btn btn-primary' name='clarreply' value='Reply / Change Reply'/>
                         </form>
@@ -75,6 +83,16 @@
                 No Clarifications.
                 <br>
             {{/if}}
+			{{#if session.authorized}}
+				<hr/>
+					<h3>Post Clarification</h3>
+					<form action="/{{mountPath}}/process/postclar.php" role='form' method="post">
+							<input type="hidden" value="{{pid}}" name="pid" />
+							<textarea class='form-control' style="width: 500px; height: 200px;" name="query"></textarea><br/>
+							<input name="clar" type="submit" class="btn btn-primary" />
+					</form>
+				<br/>
+			{{/if}}
         {{else}}
             <br />
             <div class="alert alert-danger" role="alert">

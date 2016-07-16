@@ -1,5 +1,6 @@
+"use strict";
 module.exports = {
-    session:{
+    session: {
         secret: 'Your cookie secret goes here',
         resave: false,
         saveUninitialized: true,
@@ -10,4 +11,4 @@ module.exports = {
         }
     },
     mountPath: 'aurora'
-}
+};

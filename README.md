@@ -1,2 +1,2 @@
 # auroraweb
-A web interface to aurora online judging platform
+A web interface for aurora online judging platform

@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -24,39 +25,39 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session(conf.session));
-app.use('/'+ conf.mountPath, express.static(path.join(__dirname, 'public')));
+app.use('/' + conf.mountPath, express.static(path.join(__dirname, 'public')));
 
 // hbs.create({defaultLayout: __dirname + '/app_server/views/layouts/layout'});
 hbs.registerPartials(path.join(__dirname, 'app_server/views/partials'));
-hbs.registerHelper('extend', function(name, context) {
+hbs.registerHelper('extend', function (name, context) {
     if (!this.customBlocks) {
         this.customBlocks = {};
     }
     this.customBlocks[name] = context.fn(this);
 });
-hbs.registerHelper('eq', function(a, b, options){
-  if(a === b){
-    return options.fn(this);
-  } else {
-    return options.inverse(this);
-  }
+hbs.registerHelper('eq', function (a, b, options) {
+    if (a === b) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
 });
-hbs.registerHelper('noteq', function(a, b, options){
-  if(a !== b){
-    return options.fn(this);
-  } else {
-    return options.inverse(this);
-  }
+hbs.registerHelper('noteq', function (a, b, options) {
+	if (a !== b) {
+		return options.fn(this);
+	} else {
+		return options.inverse(this);
+	}
 });
 routes(app);
 // console.log(routes.router);
 // app.use('/', routes.router);
 
 // catch 404 and forward to error handler
-app.get('/', function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.get('/', function (req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // error handlers
@@ -64,23 +65,23 @@ app.get('/', function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
+	app.use(function (err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		});
+	});
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+app.use(function (err, req, res, next) {
+	res.status(err.status || 500);
+	res.render('error', {
+		message: err.message,
+		error: {}
+	});
 });
 
 

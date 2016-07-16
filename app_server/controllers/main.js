@@ -53,7 +53,7 @@ exports.all = function(req, res, next){
     res.locals.mountPath = conf.mountPath;
     db_utils.getJudgeMode(function(err, judge){
         if(err) {
-            next(err);
+            return next(err);
         }
         if(judge.Lockdown && req.session.authorized && (!req.session.isAdmin)){
             req.session.destroy();
@@ -163,7 +163,7 @@ exports.teams = function(req, res, next){
     ], afterDone);
 };
 
-module.exports.problems = require('./problems').controller;
+module.exports.problems = require('./problems');
 
 
 
@@ -181,6 +181,4 @@ module.exports.problems = require('./problems').controller;
 
 
 
-exports.notFound = function(req, res, next){
-    res.render('404', {layout: 'layouts/layout'});
-}
+exports.notFound = require('./viewnotfound');

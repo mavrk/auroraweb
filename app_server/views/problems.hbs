@@ -17,15 +17,15 @@
                 {{/eq}}
                 <span class='btn-group' style='float:right;'>
                 {{#if session.authorized}}
-                    <a class='btn btn-primary' href='/{{mountPath}}/status/{{problemnDetails.code}},{{session.teamname}}'>My Submissions</a>
+                    <a class='btn btn-primary' href='/{{mountPath}}/status/{{problemDetails.code}},{{session.teamname}}'>My Submissions</a>
                 {{/if}}
-                    <a class='btn btn-primary' href='/{{mountPath}}/status/{{problemnDetails.code}}'>All Submissions</a>
+                    <a class='btn btn-primary' href='/{{mountPath}}/status/{{problemDetails.code}}'>All Submissions</a>
                 {{#eq problemDetails.status 'Active'}}
-                    <a class='btn btn-primary' href='/{{mountPath}}/submit/{{problemnDetails.code}}'>Submit</a>
+                    <a class='btn btn-primary' href='/{{mountPath}}/submit/{{problemDetails.code}}'>Submit</a>
                 {{else}}
                     {{#if session.authorized}}
                         {{#if session.isAdmin}}
-                            <a class='btn btn-primary' href='/{{mountPath}}/submit/{{problemnDetails.code}}'>Submit</a>
+                            <a class='btn btn-primary' href='/{{mountPath}}/submit/{{problemDetails.code}}'>Submit</a>
                         {{/if}}
                     {{/if}}
                 {{/eq}}
@@ -48,12 +48,12 @@
             {{#if clars}}
                 {{#each clars}}
                     <hr />
-                    <b><a href='/{{mountPath}}/teams/{{teamname}}'>{{teamname}}</a>:<br/>Q. {{{query}}}</b>
+                    <b><a href='/{{mountPath}}/teams/{{teamname}}'>{{teamname}}</a>:<br/>Q. {{query}}</b>
                     <br/>
                     {{#eq reply ''}}
                         ' '
                     {{else}}
-                        A. {{{reply}}}
+                        A. {{reply}}
                     {{/eq}}
                     {{#if ../session.isAdmin}}
                         <form role='form' method='post' action='/{{../mountPath}}/process/updateclaraccess'>
@@ -106,5 +106,68 @@
         </div>
     {{/if}}
 {{else}}
-    All problems
+        <script src="/{{mountPath}}/js/custom.js" type="text/javascript"></script>
+        <center>
+			<h1>Practice Problems
+				<div class="btn-group">
+					<button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+					<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li id="prob_tag">Hide/Show Tag</li>
+					</ul>
+				</div>
+			</h1>
+		</center>
+		<div id="table_prob_tag">
+			<table  class='table table-hover'>
+			{{#each problemList}}
+				{{#if needHeader}}
+					<tr>
+						<td colspan='6'>
+						<center>
+						<h3>{{pgroup}}</h3>
+						</center>
+						</td>
+					</tr>
+					<tr>
+						<th>Name</th>
+						<th class='tabletaghidden'>Type</th>
+						<th>Score</th>
+						<th>Code</th>
+						<th>Submissions</th>
+						<th>Editorial</th>
+					</tr>
+				{{/if}}
+				<tr {{#if solved}} class='success' {{/if}}>
+					<td>
+						<a href='/{{../mountPath}}/problems/{{code}}'>{{name}}</a>
+					</td>
+					<td class='tabletaghidden' >
+						<a href='/{{../mountPath}}/problems/{{code}}'>{{type}}</a>
+					</td>
+					<td>
+						<a href='/{{../mountPath}}/problems/{{code}}'>{{score}}</a>
+					</td>
+					<td>
+						<a href='/{{../mountPath}}/submit/{{code}}'>{{code}}</a>
+					</td>
+					<td>
+						<a href='/{{../mountPath}}/status/{{code}}'>{{solved}}/{{total}}</a>
+					</td>
+					<td>
+						{{#if editorial}}
+							<a href='/{{mountPath}}/editorial/{{code}}'>Link</a>
+						{{else}}
+							{{#if ../session.isAdmin}}
+								<a href='/{{../mountPath}}/admineditorial/{{code}}'>Add</a>
+							{{else}}
+								None
+							{{/if}}
+						{{/if}}
+					</td>
+				</tr>
+			{{/each}}
+			</table>
+		</div>
 {{/if}}

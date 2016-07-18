@@ -49,6 +49,27 @@ hbs.registerHelper('noteq', function (a, b, options) {
 		return options.inverse(this);
 	}
 });
+hbs.registerHelper('gt', function (a, b, options) {
+    if (a > b) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+hbs.registerHelper('lt', function (a, b, options) {
+    if (a < b) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+hbs.registerHelper('for', function(from, to, incr, block) {
+    var accum = '';
+    for(var i = from; i <= to; i += incr)
+        accum += block.fn(i);
+    return accum;
+});
+
 routes(app);
 // console.log(routes.router);
 // app.use('/', routes.router);

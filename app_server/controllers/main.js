@@ -163,8 +163,12 @@ exports.teams = function(req, res, next){
     ], afterDone);
 };
 
-module.exports.problems = require('./problems');
 
+
+
+
+module.exports.problems = require('./problems');
+module.exports.status = require('./status');
 
 
 

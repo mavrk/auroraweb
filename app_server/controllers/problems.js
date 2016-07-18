@@ -66,9 +66,10 @@ module.exports = function (req, res, next) {
 						for (i = 0; i < clars.length; i += 1) {
 							clars[i].query = clars[i].query.replace(/\r\n/g, " ");
 							clars[i].query = clars[i].query.replace(/\n/g, " ");
-
-							clars[i].reply = clars[i].reply.replace(/\r\n/g, " ");
-							clars[i].reply = clars[i].reply.replace(/\n/g, " ");
+							if(clars[i].reply){
+								clars[i].reply = clars[i].reply.replace(/\r\n/g, " ");
+								clars[i].reply = clars[i].reply.replace(/\n/g, " ");
+							}
 						}
 						callback(null);
 					}
@@ -102,6 +103,36 @@ module.exports = function (req, res, next) {
 		});
     } else {
         res.locals.problemCode = false;
-		res.render('problems', {layout: 'layouts/layout'});
+		async.series([
+			function (callback) {
+				db_utils.getAllProblems(req.session.authorized, req.session.isAdmin, req.session.tid, function (err, problemList) {
+					if (err) {
+						return callback(err);
+					}
+					res.locals.problemList = problemList;
+					callback(null);
+				});
+			},
+			function (callback) {
+				var i;
+				var lastpgroup = "";
+				for (i = 0; i < res.locals.problemList.length; i += 1) {
+					if (lastpgroup !== res.locals.problemList[i].pgroup) {
+						res.locals.problemList[i].needHeader = true;
+					} else {
+						res.locals.problemList[i].needHeader = false;
+					}
+					lastpgroup = res.locals.problemList[i].pgroup;
+					if (i === res.locals.problemList.length - 1) {
+						return callback(null);
+					}
+				}
+			}
+		], function (err) {
+			if (err) {
+				return next(err);
+			}
+			res.render('problems', {layout: 'layouts/layout'});
+		});
     }
 };

@@ -1,0 +1,94 @@
+{{#if allsubs}}
+	
+        <h1>All Submissions</h1>
+        {{#if session.isAdmin}}
+            <center>
+				<form method='post' action='/{{mountPath}}/process/rejudge'>
+					<input type='hidden' name='pid' value='{{pid}}' />
+					{{#if filter}}
+						<input type='hidden' name='filter' value='{{filter}}' />
+					{{/if}}
+					<input type='submit' name='rejudge' class='btn btn-danger' value='Rejudge All Selected Submisssions'/>
+				</form>
+			</center>
+			<br/>
+        {{/if}}
+{{else if mysubs}}
+        <h1>{{teamname}}'s Submissions</h1>
+        {{#if session.isAdmin}}
+            <center>
+				<form method='post' action='/{{mountPath}}/rejudge'>
+					<input type='hidden' name='pid' value='{{pid}}' />
+					<input type='hidden' name='tid' value='{{tid}}' />
+					{{#if filter}}
+						<input type='hidden' name='filter' value='{{filter}}' />
+					{{/if}}
+					<input type='submit' name='rejudge' class='btn btn-danger' value='Rejudge All Selected Submisssions'/>
+            	</form>
+			</center>
+			<br/>
+		{{/if}}
+{{else}}
+	<center> <h1>submissions</h1></center>
+{{/if}}
+<div class='breadcrumb' align='center'>
+	Filter : <a class='label label-primary' href='/{{mountPath}}/status/{{problemCode}}{{#if teamname}},{{teamname}}{{/if}}'>ALL</a>
+	{{#each resopts}}
+		<a class='label label-primary' href='/{{../mountPath}}/status/{{../problemCode}}{{#if teamname}},{{teamname}}{{/if}}?filter={{opt}}'>{{opt}}</a>
+	{{/each}}
+</div>
+<table class='table table-hover'>
+	<tr>
+		<th>Run ID</th>
+		<th>Team</th>
+		<th>Problem</th>
+		<th>Language</th>
+		<th>Time</th>
+		<th>Result</th>
+		<th>Options</th>
+	</tr>
+	{{#each subsList}}
+		<tr {{#eq result 'AC'}} class='success' {{/eq}}>
+			<td>
+				{{#eq access 'public'}}
+					<a href='/{{../mountPath}}/viewsolution/{{rid}}'>{{rid}}</a>
+				{{else if ../session.isAdmin}}
+					<a href='/{{../mountPath}}/viewsolution/{{rid}}'>{{rid}}</a>
+				{{else eq tid ../session.tid}}
+					<a href='/{{../mountPath}}/viewsolution/{{rid}}'>{{rid}}</a>
+				{{else}}
+					{{rid}}
+				{{/eq}}
+			</td>
+			<td><a href='/{{../mountPath}}/teams/{{teamname}}'>{{teamname}}</a></td>
+			<td><a href='/{{../mountPath}}/problems/{{code}}'>{{code}}</a></td>
+			<td>{{language}}</td>
+			<td>{{time}}</td>
+			<td>{{result}}</td>
+			<td>
+				{{#eq access 'public'}}
+					<a class='btn btn-primary' href='/{{../mountPath}}/viewsolution/{{rid}}'>Code</a>
+				{{else if ../session.isAdmin}}
+					<a class='btn btn-primary' href='/{{../mountPath}}/viewsolution/{{rid}}'>Code</a>
+				{{else eq tid ../session.tid}}
+					<a class='btn btn-primary' href='/{{../mountPath}}/viewsolution/{{rid}}'>Code</a>
+				{{/eq}}
+			</td>
+		</tr>
+	{{/each}}
+</table>
+<div align='center'>
+<ul class ="pagination">
+	{{#gt page 1}}
+		<li><a href='/{{mountPath}}/status/{{../problemCode}}{{#if teamname}},{{teamname}}{{/if}}?page=1{{#if filter}}&filter={{filter}}{{/if}}'>First</a></li>
+		<li><a href='/{{mountPath}}/status/{{../problemCode}}{{#if teamname}},{{teamname}}{{/if}}?page={{prevpage}}{{#if filter}}&filter={{filter}}{{/if}}'>Prev</a></li>
+	{{/gt}}
+	{{#for start end 1}}
+		<li {{#eq ../page this}} class = 'active'{{/eq}} ><a href='/{{../mountPath}}/status/{{../problemCode}}{{#if teamname}},{{teamname}}{{/if}}?page={{this}}{{#if filter}}&filter={{filter}}{{/if}}'>{{this}}</a></li>
+	{{/for}}
+	{{#lt page noofpages}}
+		<li><a href='/{{mountPath}}/status/{{../problemCode}}{{#if teamname}},{{teamname}}{{/if}}?page={{nextpage}}{{#if filter}}&filter={{filter}}{{/if}}'>Next</a></li>
+		<li><a href='/{{mountPath}}/status/{{../problemCode}}{{#if teamname}},{{teamname}}{{/if}}?page={{noofpages}}{{#if filter}}&filter={{filter}}{{/if}}'>Last</a></li>
+	{{/lt}}
+</ul>
+</div>

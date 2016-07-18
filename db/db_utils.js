@@ -191,18 +191,56 @@ module.exports.getClarsForPid = function (pid, cb) {
         cb(null, rows);
     });
 };
-// module.exports.getPracticeScoreWithTid = function (tid, cb) {
-//     tid = customEscape(tid);
-//     var query = "select sum(score) as tot from " +
-//                     "(" + 
-//                         "select distinct(pid), (select score from problems where pid = runs.pid and contest = 'practice') as score from runs "+
-//                         "where pid in (select pid from problems where contest = 'practice' and status = 'Active') and result = 'AC' and tid = " + tid + 
-//                     ")";
-//     db.query(query, function (err, rows) {
-//         if (err) {
-//             return cb(err);
-//         }
-//         console.log(rows);
-//         cb(null, rows[0].score);
-//     });
-// }
+module.exports.getAllProblems = function (isAuthorized, isAdmin, curtid, cb) {
+	var query;
+	if (isAdmin) {
+		query = "select distinct(problems.pid), name, code, status, pgroup, type, score, solved, total, editorials.pid as editorial, runs.pid as issolved from   problems  LEFT JOIN editorials ON problems.pid = editorials.pid LEFT JOIN runs ON problems.pid = runs.pid and runs.result='AC' and runs.pid='1' where contest='practice' order by pid desc;";
+	} else {
+		query = "select distinct(problems.pid), name, code, status, pgroup, type, score, solved, total, editorials.pid as editorial, runs.pid as issolved from   problems  LEFT JOIN editorials ON problems.pid = editorials.pid LEFT JOIN runs ON problems.pid = runs.pid and runs.result='AC' and runs.pid='1' where contest='practice' and status != 'Deleted' order by pid desc;";
+	}
+	db.query(query, cb);
+};
+module.exports.getPaginatedSubs = function (isAdmin, pid, tid, filter, page, limit, cb) {
+	var where = '';
+	var join = '';
+	if(!isAdmin){
+		if(where != '')
+			where += ' and ';
+		where += ' access != "Deleted" ';
+	}
+	if(pid){
+		if(where != '')
+			where += ' and ';
+		where += ' runs.pid = ' + pid;
+	}
+	if(tid){
+		if(where != '')
+			where += ' and ';
+		where += ' runs.tid = ' + tid;
+	}
+	if(filter){
+		if(where != '')
+			where += ' and ';
+		where += ' result = ' + filter;
+	}
+	if(where != ''){
+		where += ' and '
+		where += ' runs.pid not in (SELECT pid FROM problems WHERE status="Deleted") ';
+	}
+	if (where != '') {
+		where = ' where ' + where;
+	}
+	var query = 'select count(*) as count from runs ' + where;
+	db.query(query, function (err, count) {
+		if(err){
+			return cb(err);
+		}
+		query = 'select * from runs inner join problems on runs.pid = problems.pid inner join teams on runs.tid = teams.tid' + where + ' order by rid desc ' + ' LIMIT ' + (((page - 1) * limit)) + ' , ' + limit;
+		db.query(query, function (err, rows) {
+			if(err){
+				return cb(err);
+			}
+			cb(null, count[0].count, rows);
+		});
+	});
+};

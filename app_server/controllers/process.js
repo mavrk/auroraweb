@@ -10,10 +10,10 @@
 *           Name of the team
 *       res.locals.session.userType
 *           {Normal/Admin/undefined}
-*       res.locals.isAdmin
-*
-*
-*
+*       res.locals.session.isAdmin
+*			{true/false/undefined}
+*		res.locals.session.tid
+*			{{tid of current user}}
 */
 
 var db_utils = require('../../db/db_utils.js');
@@ -92,6 +92,7 @@ exports.login = function(req, res, next){
                     req.session.teamname = rows.teamname;
                     req.session.userType = rows.status;
                     req.session.isAdmin = (rows.status == 'Admin');
+					req.session.tid = rows.tid;
                     return res.redirect(303, (req.session.prev_url || '/' + conf.mountPath));
                 }
             });
